@@ -13,7 +13,7 @@ variable "aws_profile" {
 
 variable "stack" {
   description = "Name of the stack."
-  default     = "GameDay"
+ # default     = "GameDay"
 }
 
 variable "vpc_cidr" {
