@@ -21,12 +21,12 @@ resource "aws_iam_role" "codebuild_role" {
   ]
 }
 EOF
-  path = "/"
+  path               = "/"
 }
 
 resource "aws_iam_policy" "codebuild_policy" {
   description = "Policy to allow codebuild to execute build spec"
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -82,8 +82,8 @@ resource "aws_codebuild_project" "codebuild" {
     aws_codecommit_repository.source_repo,
     aws_ecr_repository.image_repo
   ]
-  name          = "codebuild-${var.source_repo_name}-${var.source_repo_branch}"
-  service_role  = aws_iam_role.codebuild_role.arn
+  name         = "codebuild-${var.source_repo_name}-${var.source_repo_branch}"
+  service_role = aws_iam_role.codebuild_role.arn
   artifacts {
     type = "CODEPIPELINE"
   }
@@ -94,20 +94,20 @@ resource "aws_codebuild_project" "codebuild" {
     privileged_mode             = true
     image_pull_credentials_type = "CODEBUILD"
     environment_variable {
-      name = "REPOSITORY_URI"
+      name  = "REPOSITORY_URI"
       value = aws_ecr_repository.image_repo.repository_url
     }
     environment_variable {
-      name = "AWS_DEFAULT_REGION"
+      name  = "AWS_DEFAULT_REGION"
       value = var.aws_region
     }
     environment_variable {
-      name = "CONTAINER_NAME"
+      name  = "CONTAINER_NAME"
       value = var.family
     }
   }
   source {
-    type = "CODEPIPELINE"
+    type      = "CODEPIPELINE"
     buildspec = <<BUILDSPEC
 version: 0.2
 runtime-versions:
@@ -141,4 +141,4 @@ artifacts:
     files: imagedefinitions.json
 BUILDSPEC
   }
-}        
+}
